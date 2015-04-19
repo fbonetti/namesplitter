@@ -1,0 +1,60 @@
+{{input type="file" value=file}}
+
+<table class="table">
+  <thead>
+    <tr>
+      {{#if showPrefix}}
+        <th>Prefix</th>
+      {{/if}}
+      {{#if showFirstName}}
+        <th>First name</th>
+      {{/if}}
+      {{#if showMiddleName}}
+        <th>Middle name</th>
+      {{/if}}
+      {{#if showLastName}}
+        <th>Last name</th>
+      {{/if}}
+      {{#if showSuffix}}
+        <th>Suffix</th>
+      {{/if}}
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each name in model}}
+      <tr>
+        {{#if showPrefix}}
+          <td>
+            {{input value=name.prefix}}
+          </td>
+        {{/if}}
+        {{#if showFirstName}}
+          <td>
+            {{input value=name.firstName}}
+          </td>
+        {{/if}}
+        {{#if showMiddleName}}
+          <td>
+            {{input value=name.middleName}}
+          </td>
+        {{/if}}
+        {{#if showLastName}}
+          <td>
+            {{input value=name.lastName}}
+          </td>
+        {{/if}}
+        {{#if showSuffix}}
+          <td>
+            {{input value=name.suffix}}
+          </td>
+        {{/if}}
+        <td>
+          <a {{action 'deleteRow' name}}>Delete</a>
+        </td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
+
+<a {{action 'addRow'}}class="btn-link">Add Row</a>
