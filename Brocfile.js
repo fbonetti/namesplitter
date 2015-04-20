@@ -18,4 +18,26 @@ var app = new EmberApp();
 // along with the exports of each module as its value.
 
 app.import('bower_components/bootstrap/dist/css/bootstrap.css');
+app.import('bower_components/bootstrap/dist/css/bootstrap.css.map', {
+    destDir: 'assets'
+});
+app.import('bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.eot', {
+    destDir: 'fonts'
+});
+app.import('bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf', {
+    destDir: 'fonts'
+});
+app.import('bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.svg', {
+    destDir: 'fonts'
+});
+app.import('bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.woff', {
+    destDir: 'fonts'
+});
+app.import('bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.woff2', {
+    destDir: 'fonts'
+});
+
+app.import('vendor/simple-excel-js/src/simple-excel.js');
+app.import('bower_components/js-name-parser/dist/js-name-parser.js');
+
 module.exports = app.toTree();

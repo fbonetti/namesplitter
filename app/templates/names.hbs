@@ -1,16 +1,16 @@
-{{input type="file" value=file}}
+{{file-drop file=file}}
 
-<table class="table">
+<table>
   <thead>
     <tr>
-      {{#if showPrefix}}
-        <th>Prefix</th>
+      {{#if showSalutation}}
+        <th>Salutation</th>
       {{/if}}
       {{#if showFirstName}}
         <th>First name</th>
       {{/if}}
-      {{#if showMiddleName}}
-        <th>Middle name</th>
+      {{#if showMiddleInitial}}
+        <th>Middle initial</th>
       {{/if}}
       {{#if showLastName}}
         <th>Last name</th>
@@ -24,9 +24,9 @@
   <tbody>
     {{#each name in model}}
       <tr>
-        {{#if showPrefix}}
+        {{#if showSalutation}}
           <td>
-            {{input value=name.prefix}}
+            {{input value=name.salutation}}
           </td>
         {{/if}}
         {{#if showFirstName}}
@@ -34,9 +34,9 @@
             {{input value=name.firstName}}
           </td>
         {{/if}}
-        {{#if showMiddleName}}
+        {{#if showMiddleInitial}}
           <td>
-            {{input value=name.middleName}}
+            {{input value=name.middleInitial}}
           </td>
         {{/if}}
         {{#if showLastName}}
@@ -50,7 +50,9 @@
           </td>
         {{/if}}
         <td>
-          <a {{action 'deleteRow' name}}>Delete</a>
+          <a {{action 'deleteRow' name}}>
+            <i class="glyphicon glyphicon-remove"></i>
+          </a>
         </td>
       </tr>
     {{/each}}
@@ -58,3 +60,4 @@
 </table>
 
 <a {{action 'addRow'}}class="btn-link">Add Row</a>
+<a {{action 'exportToCsv'}}class="btn-link">Export List</a>
