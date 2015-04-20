@@ -1,8 +1,36 @@
-{{file-drop file=file}}
+{{#file-drop file=file}}
+  <strong>Click to copy/paste, or drop your file here</strong>
+{{/file-drop}}
 
-<table>
+<div class="text-center">
+  <div class="btn-group">
+    <label class="btn btn-primary {{if showSalutation 'active'}}">
+      {{input type="checkbox" autocomplete="off" checked=showSalutation}}
+      Salutation
+    </label>
+    <label class="btn btn-primary {{if showFirstName 'active'}}">
+      {{input type="checkbox" autocomplete="off" checked=showFirstName}}
+      First Name
+    </label>
+    <label class="btn btn-primary {{if showMiddleInitial 'active'}}">
+      {{input type="checkbox" autocomplete="off" checked=showMiddleInitial}}
+      Middle Initial
+    </label>
+    <label class="btn btn-primary {{if showLastName 'active'}}">
+      {{input type="checkbox" autocomplete="off" checked=showLastName}}
+      Last Name
+    </label>
+    <label class="btn btn-primary {{if showSuffix 'active'}}">
+      {{input type="checkbox" autocomplete="off" checked=showSuffix}}
+      Suffix
+    </label>
+  </div>
+</div>
+
+<table class="names-table table table-bordered table-condensed">
   <thead>
     <tr>
+      <th></th>
       {{#if showSalutation}}
         <th>Salutation</th>
       {{/if}}
@@ -22,30 +50,31 @@
     </tr>
   </thead>
   <tbody>
-    {{#each name in model}}
+    {{#each model as |name index|}}
       <tr>
+        <td>{{increment-integer index}}</td>
         {{#if showSalutation}}
-          <td>
+          <td class="input-cell">
             {{input value=name.salutation}}
           </td>
         {{/if}}
         {{#if showFirstName}}
-          <td>
+          <td class="input-cell">
             {{input value=name.firstName}}
           </td>
         {{/if}}
         {{#if showMiddleInitial}}
-          <td>
+          <td class="input-cell">
             {{input value=name.middleInitial}}
           </td>
         {{/if}}
         {{#if showLastName}}
-          <td>
+          <td class="input-cell">
             {{input value=name.lastName}}
           </td>
         {{/if}}
         {{#if showSuffix}}
-          <td>
+          <td class="input-cell">
             {{input value=name.suffix}}
           </td>
         {{/if}}

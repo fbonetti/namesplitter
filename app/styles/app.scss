@@ -1,0 +1,17 @@
+table.names-table {
+  tbody {
+    tr {
+      td.input-cell {
+        padding: 0px;
+        margin: 0px;
+
+        input {
+          padding: 5px;
+          margin: 0;
+          width: 100%;
+          border: none;
+        }
+      }
+    }
+  }
+}

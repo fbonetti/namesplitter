@@ -1,0 +1,13 @@
+& {
+  border: 10px dashed #ccc;
+  width: 500px;
+  height: 300px;
+  margin: 20px auto;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 300px;
+}
+
+&.hover {
+  border: 10px dashed #333;
+}

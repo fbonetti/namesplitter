@@ -55,7 +55,27 @@ export default Ember.Controller.extend({
       var sheet = new SimpleExcel.Sheet();
       var Cell = SimpleExcel.Cell;
 
-      var records = this.get('model').map(function(item) {
+      var records = [[]];
+
+      // Set up the header row
+      if (self.get('showSalutation')) {
+        records[0].push(new Cell('Salutation', 'TEXT'));
+      }
+      if (self.get('showFirstName')) {
+        records[0].push(new Cell('First Name', 'TEXT'));
+      }
+      if (self.get('showMiddleInitial')) {
+        records[0].push(new Cell('Middle Initial', 'TEXT'));
+      }
+      if (self.get('showLastName')) {
+        records[0].push(new Cell('Last Name', 'TEXT'));
+      }
+      if (self.get('showSuffix')) {
+        records[0].push(new Cell('Suffix', 'TEXT'));
+      }
+
+      // Insert each name as a row
+      this.store.all('name').forEach(function(item) {
         var cells = [];
 
         if (self.get('showSalutation')) {
@@ -74,10 +94,11 @@ export default Ember.Controller.extend({
           cells.push(new Cell(item.get('suffix') || '', 'TEXT'));
         }
 
-        return cells;
+        records.push(cells);
       });
 
       sheet.setRecords(records);
+      csvWriter.removeSheet(1);
       csvWriter.insertSheet(sheet);
       csvWriter.saveFile();
     }
