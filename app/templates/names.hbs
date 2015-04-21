@@ -1,92 +1,104 @@
-{{#file-drop file=file}}
-  <strong>Click to copy/paste, or drop your file here</strong>
-{{/file-drop}}
+<div class="row">
+  <div class="col-sm-4">
+    {{#file-drop file=file}}
+      <strong>Click to copy/paste, or drop your file here</strong>
+    {{/file-drop}}
 
-<div class="text-center">
-  <div class="btn-group">
-    <label class="btn btn-primary {{if showSalutation 'active'}}">
-      {{input type="checkbox" autocomplete="off" checked=showSalutation}}
-      Salutation
-    </label>
-    <label class="btn btn-primary {{if showFirstName 'active'}}">
-      {{input type="checkbox" autocomplete="off" checked=showFirstName}}
-      First Name
-    </label>
-    <label class="btn btn-primary {{if showMiddleInitial 'active'}}">
-      {{input type="checkbox" autocomplete="off" checked=showMiddleInitial}}
-      Middle Initial
-    </label>
-    <label class="btn btn-primary {{if showLastName 'active'}}">
-      {{input type="checkbox" autocomplete="off" checked=showLastName}}
-      Last Name
-    </label>
-    <label class="btn btn-primary {{if showSuffix 'active'}}">
-      {{input type="checkbox" autocomplete="off" checked=showSuffix}}
-      Suffix
-    </label>
+    <div class="text-center">
+      <label class="btn btn-info btn-block {{if showSalutation 'active'}}">
+        {{input type="checkbox" autocomplete="off" checked=showSalutation}}
+        Show Salutation
+      </label>
+      <label class="btn btn-info btn-block {{if showFirstName 'active'}}">
+        {{input type="checkbox" autocomplete="off" checked=showFirstName}}
+        Show First Name
+      </label>
+      <label class="btn btn-info btn-block {{if showMiddleInitial 'active'}}">
+        {{input type="checkbox" autocomplete="off" checked=showMiddleInitial}}
+        Show Middle Initial
+      </label>
+      <label class="btn btn-info btn-block {{if showLastName 'active'}}">
+        {{input type="checkbox" autocomplete="off" checked=showLastName}}
+        Show Last Name
+      </label>
+      <label class="btn btn-info btn-block {{if showSuffix 'active'}}">
+        {{input type="checkbox" autocomplete="off" checked=showSuffix}}
+        Show Suffix
+      </label>
+
+      <hr/>
+
+      <a class="btn btn-primary btn-block" {{action 'exportToCsv'}}>Export List</a>
+    </div>
+  </div>
+
+  <div class="col-sm-8">
+    <table class="names-table table table-bordered table-condensed">
+      <thead>
+        <tr>
+          <th></th>
+          {{#if showSalutation}}
+            <th>Salutation</th>
+          {{/if}}
+          {{#if showFirstName}}
+            <th>First name</th>
+          {{/if}}
+          {{#if showMiddleInitial}}
+            <th>Middle initial</th>
+          {{/if}}
+          {{#if showLastName}}
+            <th>Last name</th>
+          {{/if}}
+          {{#if showSuffix}}
+            <th>Suffix</th>
+          {{/if}}
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each model as |name index|}}
+          <tr>
+            <td>{{increment-integer index}}</td>
+            {{#if showSalutation}}
+              <td class="input-cell">
+                {{input value=name.salutation}}
+              </td>
+            {{/if}}
+            {{#if showFirstName}}
+              <td class="input-cell">
+                {{input value=name.firstName}}
+              </td>
+            {{/if}}
+            {{#if showMiddleInitial}}
+              <td class="input-cell">
+                {{input value=name.middleInitial}}
+              </td>
+            {{/if}}
+            {{#if showLastName}}
+              <td class="input-cell">
+                {{input value=name.lastName}}
+              </td>
+            {{/if}}
+            {{#if showSuffix}}
+              <td class="input-cell">
+                {{input value=name.suffix}}
+              </td>
+            {{/if}}
+            <td>
+              <a {{action 'deleteRow' name}}>
+                <i class="glyphicon glyphicon-remove"></i>
+              </a>
+            </td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+
+    <div class='text-right'>
+      <a {{action 'addRow'}}class="btn-link">
+        <span class="glyphicon glyphicon-plus"></span>
+        Add Row
+      </a>
+    </div>
   </div>
 </div>
-
-<table class="names-table table table-bordered table-condensed">
-  <thead>
-    <tr>
-      <th></th>
-      {{#if showSalutation}}
-        <th>Salutation</th>
-      {{/if}}
-      {{#if showFirstName}}
-        <th>First name</th>
-      {{/if}}
-      {{#if showMiddleInitial}}
-        <th>Middle initial</th>
-      {{/if}}
-      {{#if showLastName}}
-        <th>Last name</th>
-      {{/if}}
-      {{#if showSuffix}}
-        <th>Suffix</th>
-      {{/if}}
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    {{#each model as |name index|}}
-      <tr>
-        <td>{{increment-integer index}}</td>
-        {{#if showSalutation}}
-          <td class="input-cell">
-            {{input value=name.salutation}}
-          </td>
-        {{/if}}
-        {{#if showFirstName}}
-          <td class="input-cell">
-            {{input value=name.firstName}}
-          </td>
-        {{/if}}
-        {{#if showMiddleInitial}}
-          <td class="input-cell">
-            {{input value=name.middleInitial}}
-          </td>
-        {{/if}}
-        {{#if showLastName}}
-          <td class="input-cell">
-            {{input value=name.lastName}}
-          </td>
-        {{/if}}
-        {{#if showSuffix}}
-          <td class="input-cell">
-            {{input value=name.suffix}}
-          </td>
-        {{/if}}
-        <td>
-          <a {{action 'deleteRow' name}}>
-            <i class="glyphicon glyphicon-remove"></i>
-          </a>
-        </td>
-      </tr>
-    {{/each}}
-  </tbody>
-</table>
-
-<a {{action 'addRow'}}class="btn-link">Add Row</a>
-<a {{action 'exportToCsv'}}class="btn-link">Export List</a>
