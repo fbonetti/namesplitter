@@ -1,5 +1,15 @@
 import DS from 'ember-data';
 
-export default Ember.Object.extend({
+var idGenerator = (function() {
+  var id = 0;
 
+  return function() {
+    return id++;
+  }
+})();
+
+export default Ember.Object.extend({
+  init() {
+    this.set('id', idGenerator());
+  }
 });

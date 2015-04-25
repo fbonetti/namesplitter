@@ -9,6 +9,32 @@ export default Ember.Controller.extend({
   showSuffix: true,
   file: null,
 
+  inputCellClass: function() {
+    var columns = 0;
+
+    if (this.get('showSalutation')) {
+      columns += 1;
+    }
+
+    if (this.get('showFirstName')) {
+      columns += 1;
+    }
+
+    if (this.get('showMiddleInitial')) {
+      columns += 1;
+    }
+
+    if (this.get('showLastName')) {
+      columns += 1;
+    }
+
+    if (this.get('showSuffix')) {
+      columns += 1;
+    }
+
+    return `cell-width-${columns}`;
+  }.property('showSalutation', 'showFirstName', 'showMiddleInitial', 'showLastName', 'showSuffix'),
+
   fileChanged: function() {
     var file = this.get('file');
     var model = this.get('model');
@@ -47,9 +73,17 @@ export default Ember.Controller.extend({
   actions: {
     addRow: function() {
       this.get('model').pushObject(Name.create({}));
+      
+      // I know this is bad practice.. but whatever
+      setTimeout(function() {
+        $(".ember-list-view-list").scrollTop($(".ember-list-view-list").height());
+      }, 1);
     },
     deleteRow: function(name) {
-      this.get('model').removeObject(name);
+      var model = this.get('model');
+      var obj = model.findBy('id', name.get('id'));
+
+      model.removeObject(obj);
     },
     exportToCsv: function() {
       var self = this;
