@@ -22,23 +22,23 @@
 }
 
 .cell-width-5 {
-  width: 136px;
+  width: 132px;
 }
 
 .cell-width-4 {
-  width: 170px;
+  width: 165px;
 }
 
 .cell-width-3 {
-  width: 226px;
+  width: 220px;
 }
 
 .cell-width-2 {
-  width: 340px;
+  width: 330px;
 }
 
 .cell-width-1 {
-  width: 680px;
+  width: 660px;
 }
 
 .index-cell {
@@ -50,4 +50,9 @@
 .remove-link {
   width: 20px;
   text-align: center;
+}
+
+textarea.raw-list {
+  margin-top: 20px;
+  width: 100%;
 }

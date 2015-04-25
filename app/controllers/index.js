@@ -8,6 +8,7 @@ export default Ember.Controller.extend({
   showLastName: true,
   showSuffix: true,
   file: null,
+  list: "",
 
   inputCellClass: function() {
     var columns = 0;
@@ -40,35 +41,56 @@ export default Ember.Controller.extend({
     var model = this.get('model');
 
     if (file && file.type === "text/csv") {
-      model.clear();
-
       var csvParser = new SimpleExcel.Parser.CSV();
       csvParser.loadString(file.result);
       
       var rows = csvParser.getSheet(1);
+      var fullNames = [];
 
       for (var i = 0; i < rows.length; i++) {
         var row = rows[i];
         var cell = row[0];
-        var fullName = cell.value;
+        var fullName = $.trim(cell.value);
 
         if (fullName.length === 0) { continue; }
 
-        var parts = NameParse.parse(fullName);
-
-        model.pushObject(
-          Name.create({
-            salutation: parts.salutation,
-            firstName: parts.firstName,
-            middleInitial: parts.intials,
-            lastName: parts.lastName,
-            suffix: parts.suffix,
-            fullName: fullName
-          })
-        );
+        fullNames.push(fullName)
       }
+
+      this.set('list', fullNames.join("\n"));
     }
   }.observes('file'),
+
+  listChanged: function() {
+    var model = this.get('model');
+    model.clear();
+
+    var fullNames = this.get('list').split("\n");
+
+    for (var i = 0; i < fullNames.length; i++) {
+      var fullName = fullNames[i];
+
+      if (fullName.length === 0) { continue; }
+
+      // Skip invalid names
+      try {
+        var parts = NameParse.parse(fullName);
+      } catch (e) {
+        continue;
+      }
+
+      model.pushObject(
+        Name.create({
+          salutation: parts.salutation,
+          firstName: parts.firstName,
+          middleInitial: parts.intials,
+          lastName: parts.lastName,
+          suffix: parts.suffix,
+          fullName: fullName
+        })
+      );
+    }
+  }.observes('list'),
 
   actions: {
     addRow: function() {
@@ -76,7 +98,9 @@ export default Ember.Controller.extend({
       
       // I know this is bad practice.. but whatever
       setTimeout(function() {
-        $(".ember-list-view-list").scrollTop($(".ember-list-view-list").height());
+        var $listElement = $(".ember-list-view-list");
+        var height = $listElement[0].scrollHeight;
+        $listElement.scrollTop(height);
       }, 1);
     },
     deleteRow: function(name) {

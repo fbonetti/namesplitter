@@ -1,8 +1,16 @@
 <div class="row">
   <div class="col-sm-4">
     {{#file-drop file=file}}
-      <strong>Click to copy/paste, or drop your file here</strong>
+      <strong>Drop your file here</strong>
     {{/file-drop}}
+
+    <div class="text-center">
+      <em>- or, paste your list below -</em>
+    </div>
+
+    {{textarea rows="4" value=list class="raw-list"}}
+
+    <hr/>
 
     <div class="text-center">
       <label class="btn btn-info btn-block {{if showSalutation 'active'}}">
