@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import Name from '../models/name';
 
 export default Ember.Controller.extend({
   showSalutation: true,
@@ -10,11 +11,10 @@ export default Ember.Controller.extend({
 
   fileChanged: function() {
     var file = this.get('file');
+    var model = this.get('model');
 
     if (file && file.type === "text/csv") {
-      this.get('model').forEach(function(name) {
-        name.destroyRecord();
-      });
+      model.clear();
 
       var csvParser = new SimpleExcel.Parser.CSV();
       csvParser.loadString(file.result);
@@ -30,24 +30,26 @@ export default Ember.Controller.extend({
 
         var parts = NameParse.parse(fullName);
 
-        this.store.createRecord('name', {
-          salutation: parts.salutation,
-          firstName: parts.firstName,
-          middleInitial: parts.intials,
-          lastName: parts.lastName,
-          suffix: parts.suffix,
-          fullName: fullName
-        });
+        model.pushObject(
+          Name.create({
+            salutation: parts.salutation,
+            firstName: parts.firstName,
+            middleInitial: parts.intials,
+            lastName: parts.lastName,
+            suffix: parts.suffix,
+            fullName: fullName
+          })
+        );
       }
     }
   }.observes('file'),
 
   actions: {
     addRow: function() {
-      this.store.createRecord('name', {});
+      this.get('model').pushObject(Name.create({}));
     },
     deleteRow: function(name) {
-      name.destroyRecord();
+      this.get('model').removeObject(name);
     },
     exportToCsv: function() {
       var self = this;
@@ -75,7 +77,7 @@ export default Ember.Controller.extend({
       }
 
       // Insert each name as a row
-      this.store.all('name').forEach(function(item) {
+      this.get('model').forEach(function(item) {
         var cells = [];
 
         if (self.get('showSalutation')) {
