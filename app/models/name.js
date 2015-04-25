@@ -9,7 +9,7 @@ var idGenerator = (function() {
 })();
 
 export default Ember.Object.extend({
-  init() {
+  init: function() {
     this.set('id', idGenerator());
   }
 });

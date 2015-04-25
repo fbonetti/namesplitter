@@ -11,29 +11,21 @@ export default Ember.Controller.extend({
   list: "",
 
   inputCellClass: function() {
-    var columns = 0;
+    var self = this;
 
-    if (this.get('showSalutation')) {
-      columns += 1;
-    }
+    var columns = Ember.A([
+      'showSalutation',
+      'showFirstName',
+      'showMiddleInitial',
+      'showLastName',
+      'showSuffix'
+    ]);
 
-    if (this.get('showFirstName')) {
-      columns += 1;
-    }
+    var visibleColumnCount = columns.filter(function (column) {
+      return self.get(column);
+    }).length;
 
-    if (this.get('showMiddleInitial')) {
-      columns += 1;
-    }
-
-    if (this.get('showLastName')) {
-      columns += 1;
-    }
-
-    if (this.get('showSuffix')) {
-      columns += 1;
-    }
-
-    return `cell-width-${columns}`;
+    return `cell-width-${visibleColumnCount}`;
   }.property('showSalutation', 'showFirstName', 'showMiddleInitial', 'showLastName', 'showSuffix'),
 
   fileChanged: function() {
@@ -41,21 +33,8 @@ export default Ember.Controller.extend({
     var model = this.get('model');
 
     if (file && file.type === "text/csv") {
-      var csvParser = new SimpleExcel.Parser.CSV();
-      csvParser.loadString(file.result);
-      
-      var rows = csvParser.getSheet(1);
-      var fullNames = [];
-
-      for (var i = 0; i < rows.length; i++) {
-        var row = rows[i];
-        var cell = row[0];
-        var fullName = $.trim(cell.value);
-
-        if (fullName.length === 0) { continue; }
-
-        fullNames.push(fullName)
-      }
+      var rows = Papa.parse(file.result).data;
+      var fullNames = rows.map(row => row[0]).compact();
 
       this.set('list', fullNames.join("\n"));
     }
