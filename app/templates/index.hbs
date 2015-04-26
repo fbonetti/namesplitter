@@ -4,6 +4,13 @@
       <strong>Drop your file here</strong>
     {{/file-drop}}
 
+    {{#unless validFile}}
+      <div class="alert alert-danger" role="alert">
+        <strong>Sorry!</strong>
+        &nbsp;We only accept CSV and TXT formats.
+      </div>
+    {{/unless}}
+
     <div class="text-center">
       <em>- or, paste your list below -</em>
     </div>
@@ -36,7 +43,7 @@
 
       <hr/>
 
-      <a class="btn btn-primary btn-block" {{action 'exportToCsv'}}>Export {{model.length}} Names</a>
+      <a class="btn btn-primary btn-block" {{action 'exportToCsv'}}>Export {{nonBlankNames.length}} Names</a>
     </div>
   </div>
 

@@ -1,6 +1,11 @@
 import Ember from 'ember';
 import Name from '../models/name';
 
+var VALID_FILE_TYPES = [
+  "text/csv",
+  "text/plain"
+];
+
 export default Ember.Controller.extend({
   showSalutation: true,
   showFirstName: true,
@@ -9,6 +14,20 @@ export default Ember.Controller.extend({
   showSuffix: true,
   file: null,
   list: "",
+
+  nonBlankNames: function() {
+    return this.get('model').reject(item => item.get('isBlank'));
+  }.property('model.@each.isBlank'),
+
+  validFile: function() {
+    var file = this.get('file');
+
+    if (file === null) {
+      return true;
+    }
+
+    return VALID_FILE_TYPES.indexOf(file.type) >= 0;
+  }.property('file'),
 
   inputCellClass: function() {
     var self = this;
@@ -118,7 +137,7 @@ export default Ember.Controller.extend({
       }
 
       // Insert each name as a row
-      this.get('model').forEach(function(item) {
+      this.get('nonBlankNames').forEach(function(item) {
         var cells = [];
 
         if (self.get('showSalutation')) {
