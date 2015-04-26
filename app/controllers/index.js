@@ -69,7 +69,7 @@ export default Ember.Controller.extend({
         Name.create({
           salutation: parts.salutation,
           firstName: parts.firstName,
-          middleInitial: parts.intials,
+          middleInitial: parts.initials,
           lastName: parts.lastName,
           suffix: parts.suffix,
           fullName: fullName
@@ -97,27 +97,24 @@ export default Ember.Controller.extend({
     },
     exportToCsv: function() {
       var self = this;
-      var csvWriter = new SimpleExcel.Writer.CSV();
-      var sheet = new SimpleExcel.Sheet();
-      var Cell = SimpleExcel.Cell;
 
       var records = [[]];
 
       // Set up the header row
       if (self.get('showSalutation')) {
-        records[0].push(new Cell('Salutation', 'TEXT'));
+        records[0].push('Salutation');
       }
       if (self.get('showFirstName')) {
-        records[0].push(new Cell('First Name', 'TEXT'));
+        records[0].push('First Name');
       }
       if (self.get('showMiddleInitial')) {
-        records[0].push(new Cell('Middle Initial', 'TEXT'));
+        records[0].push('Middle Initial');
       }
       if (self.get('showLastName')) {
-        records[0].push(new Cell('Last Name', 'TEXT'));
+        records[0].push('Last Name');
       }
       if (self.get('showSuffix')) {
-        records[0].push(new Cell('Suffix', 'TEXT'));
+        records[0].push('Suffix');
       }
 
       // Insert each name as a row
@@ -125,28 +122,27 @@ export default Ember.Controller.extend({
         var cells = [];
 
         if (self.get('showSalutation')) {
-          cells.push(new Cell(item.get('salutation') || '', 'TEXT'));
+          cells.push(item.get('salutation') || '');
         }
         if (self.get('showFirstName')) {
-          cells.push(new Cell(item.get('firstName') || '', 'TEXT'));
+          cells.push(item.get('firstName') || '');
         }
         if (self.get('showMiddleInitial')) {
-          cells.push(new Cell(item.get('middleInitial') || '', 'TEXT'));
+          cells.push(item.get('middleInitial') || '');
         }
         if (self.get('showLastName')) {
-          cells.push(new Cell(item.get('lastName') || '', 'TEXT'));
+          cells.push(item.get('lastName') || '');
         }
         if (self.get('showSuffix')) {
-          cells.push(new Cell(item.get('suffix') || '', 'TEXT'));
+          cells.push(item.get('suffix') || '');
         }
 
         records.push(cells);
       });
 
-      sheet.setRecords(records);
-      csvWriter.removeSheet(1);
-      csvWriter.insertSheet(sheet);
-      csvWriter.saveFile();
+      var csvData = Papa.unparse(records);
+
+      window.location.href = 'data:text/csv;charset=utf-8;base64,' + btoa(csvData);
     }
   }
 });
