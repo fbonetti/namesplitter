@@ -32,11 +32,18 @@ export default Ember.Controller.extend({
     var file = this.get('file');
     var model = this.get('model');
 
-    if (file && file.type === "text/csv") {
-      var rows = Papa.parse(file.result).data;
-      var fullNames = rows.map(row => row[0]).compact();
+    if (file) {
+      switch (file.type) {
+        case "text/csv":
+          var rows = Papa.parse(file.result).data;
+          var fullNames = rows.map(row => row[0]).compact();
+          this.set('list', fullNames.join("\n"));
+          break;
 
-      this.set('list', fullNames.join("\n"));
+        case "text/plain":
+          this.set('list', file.result);
+          break;
+      }
     }
   }.observes('file'),
 

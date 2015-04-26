@@ -39,5 +39,6 @@ app.import('bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.w
 
 app.import('bower_components/js-name-parser/dist/js-name-parser.js');
 app.import('bower_components/papa.parse/papaparse.js');
+app.import('bower_components/js-xlsx/dist/xlsx.core.min.js');
 
 module.exports = app.toTree();
